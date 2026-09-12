@@ -1,4 +1,3 @@
-
 const axios = require('axios');
 
 export default async function handler(req, res) {
@@ -16,7 +15,8 @@ export default async function handler(req, res) {
       { name: 'FMP Live', url: 'https://m.fmp.live' }
     ];
 
-    const m3u8Regex = /(https?:\/\/[^\s"'<>]+?\.m3u8[^\s"'<>]*)/g;
+    // Regex to find links containing 'live' or 'match'
+    const linkRegex = /href=["']([^"']*(?:live|match)[^"']*)["']/gi;
 
     for (const site of sites) {
       try {
@@ -31,29 +31,43 @@ export default async function handler(req, res) {
         const html = response.data;
         let match;
         let count = 1;
-        let foundLinks = new Set(); 
+        let foundLinks = new Set();
 
-        while ((match = m3u8Regex.exec(html)) !== null) {
-          const streamUrl = match[1];
-          if (!foundLinks.has(streamUrl)) {
-            foundLinks.add(streamUrl);
-            m3uContent += `#EXTINF:-1 group-title="${site.name} Live", ${site.name} Match ${count}\n${streamUrl}\n\n`;
+        while ((match = linkRegex.exec(html)) !== null) {
+          let relativeOrAbsoluteUrl = match[1];
+          
+          let fullUrl = relativeOrAbsoluteUrl;
+          if (!fullUrl.startsWith('http')) {
+            const base = site.url.endsWith('/') ? site.url.slice(0, -1) : site.url;
+            if (fullUrl.startsWith('/')) {
+              fullUrl = `${base}${fullUrl}`;
+            } else {
+              fullUrl = `${base}/${fullUrl}`;
+            }
+          }
+
+          if (!foundLinks.has(fullUrl)) {
+            foundLinks.add(fullUrl);
+            m3uContent += `#EXTINF:-1 group-title="${site.name} Matches", ${site.name} Live Match ${count}\n${fullUrl}\n\n`;
             count++;
           }
         }
+
+        // Fallback if no specific match links are found on the homepage
+        if (count === 1) {
+          m3uContent += `#EXTINF:-1 group-title="${site.name} Main", ${site.name} Home Page\n${site.url}/\n\n`;
+        }
+
       } catch (err) {
         console.error(`Error with ${site.name}: ` + err.message);
+        m3uContent += `#EXTINF:-1 group-title="${site.name} Error", ${site.name} Main (Fallback)\n${site.url}/\n\n`;
       }
-    }
-
-    if (m3uContent === "#EXTM3U\n\n") {
-      m3uContent += `#EXTINF:-1 group-title="Info", No direct m3u8 streams found currently\nhttp://localhost/no_stream_found.m3u8\n\n`;
     }
 
     res.setHeader('Content-Type', 'audio/x-mpegurl');
     res.status(200).send(m3uContent);
 
   } catch (error) {
-    res.status(500).send("Error generating playlist.");
+    res.status(500).send("Error generating playlist: " + error.message);
   }
 }
