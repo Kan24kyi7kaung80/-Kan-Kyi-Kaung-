@@ -7,62 +7,53 @@ export default async function handler(req, res) {
 
   try {
     let m3uContent = "#EXTM3U\n\n";
-
-    const sites = [
-      { name: 'TrucTiepBongDa', url: 'https://tructiepbongda.football' },
-      { name: '857zb', url: 'https://m.857zb81.com' },
-      { name: 'SutbongTV', url: 'https://m.sutbongtv.com' },
-      { name: '90phutZag', url: 'https://90phutzag.tv' },
-      { name: 'FMP Live', url: 'https://m.fmp.live' }
-    ];
+    const site = { name: 'TrucTiepBongDa', url: 'https://tructiepbongda.football' };
 
     // Regex to find match or live links
     const linkRegex = /href=["']([^"']*(?:live|match|room|watch)[^"']*)["']/gi;
 
-    for (const site of sites) {
-      try {
-        const response = await axios.get(site.url, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-            'Referer': site.url
-          },
-          timeout: 8000
-        });
+    try {
+      const response = await axios.get(site.url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Referer': site.url
+        },
+        timeout: 8000
+      });
 
-        const html = response.data;
-        let match;
-        let count = 1;
-        let foundLinks = new Set();
+      const html = response.data;
+      let match;
+      let count = 1;
+      let foundLinks = new Set();
 
-        while ((match = linkRegex.exec(html)) !== null) {
-          let relativeOrAbsoluteUrl = match[1];
-          
-          let fullUrl = relativeOrAbsoluteUrl;
-          if (!fullUrl.startsWith('http')) {
-            const base = site.url.endsWith('/') ? site.url.slice(0, -1) : site.url;
-            if (fullUrl.startsWith('/')) {
-              fullUrl = `${base}${fullUrl}`;
-            } else {
-              fullUrl = `${base}/${fullUrl}`;
-            }
-          }
-
-          if (!foundLinks.has(fullUrl)) {
-            foundLinks.add(fullUrl);
-            m3uContent += `#EXTINF:-1 group-title="${site.name}", ${site.name} Stream ${count}\n${fullUrl}\n\n`;
-            count++;
+      while ((match = linkRegex.exec(html)) !== null) {
+        let relativeOrAbsoluteUrl = match[1];
+        
+        let fullUrl = relativeOrAbsoluteUrl;
+        if (!fullUrl.startsWith('http')) {
+          const base = site.url.endsWith('/') ? site.url.slice(0, -1) : site.url;
+          if (fullUrl.startsWith('/')) {
+            fullUrl = `${base}${fullUrl}`;
+          } else {
+            fullUrl = `${base}/${fullUrl}`;
           }
         }
 
-        // Fallback to homepage if no specific links found
-        if (count === 1) {
-          m3uContent += `#EXTINF:-1 group-title="${site.name}", ${site.name} Home\n${site.url}/\n\n`;
+        if (!foundLinks.has(fullUrl)) {
+          foundLinks.add(fullUrl);
+          m3uContent += `#EXTINF:-1 group-title="TrucTiepBongDa", TrucTiepBongDa Stream ${count}\n${fullUrl}\n\n`;
+          count++;
         }
-
-      } catch (err) {
-        console.error(`Error with ${site.name}: ` + err.message);
-        m3uContent += `#EXTINF:-1 group-title="${site.name}", ${site.name} Main (Fallback)\n${site.url}/\n\n`;
       }
+
+      // Fallback to homepage if no specific links found
+      if (count === 1) {
+        m3uContent += `#EXTINF:-1 group-title="TrucTiepBongDa", TrucTiepBongDa Home\n${site.url}/\n\n`;
+      }
+
+    } catch (err) {
+      console.error(`Error with ${site.name}: ` + err.message);
+      m3uContent += `#EXTINF:-1 group-title="TrucTiepBongDa", TrucTiepBongDa Main (Fallback)\n${site.url}/\n\n`;
     }
 
     res.setHeader('Content-Type', 'audio/x-mpegurl');
