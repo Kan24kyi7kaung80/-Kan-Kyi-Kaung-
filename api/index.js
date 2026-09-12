@@ -7,40 +7,31 @@ export default async function handler(req, res) {
 
   try {
     let m3uContent = "#EXTM3U\n\n";
-    const baseUrl = 'https://m.857zb81.com';
 
-    const response = await axios.get(`${baseUrl}/?t=${Date.now()}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36'
-      },
-      timeout: 10000
-    });
+    // 1. 857zb Links
+    const url857 = 'https://m.857zb81.com';
+    m3uContent += `#EXTINF:-1 group-title="857zb", 857zb Stream 1\n${url857}/\n\n`;
+    m3uContent += `#EXTINF:-1 group-title="857zb", 857zb Stream 2\n${url857}/#/live\n\n`;
 
-    const html = response.data;
-    const matchRegex = /href=["']([^"']*live[^"']*)["']/g;
-    let match;
-    let count = 1;
+    // 2. Sutbongtv Links
+    const urlSutbong = 'https://m.sutbongtv.com';
+    m3uContent += `#EXTINF:-1 group-title="SutbongTV", SutbongTV Stream 1\n${urlSutbong}/\n\n`;
+    m3uContent += `#EXTINF:-1 group-title="SutbongTV", SutbongTV Stream 2\n${urlSutbong}/#/live\n\n`;
 
-    while ((match = matchRegex.exec(html)) !== null) {
-      let link = match[1];
-      if (!link.startsWith('http')) {
-        link = `${baseUrl}${link.startsWith('/') ? '' : '/'}${link}`;
-      }
-      m3uContent += `#EXTINF:-1 group-title="857zb Matches", 857zb Live Match ${count}\n${link}\n\n`;
-      count++;
-    }
+    // 3. 90phutzag Links
+    const url90phut = 'https://90phutzag.tv';
+    m3uContent += `#EXTINF:-1 group-title="90phutZag", 90phutZag Stream 1\n${url90phut}/\n\n`;
+    m3uContent += `#EXTINF:-1 group-title="90phutZag", 90phutZag Stream 2\n${url90phut}/#/live\n\n`;
 
-    if (count === 1) {
-      m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 1\n${baseUrl}/\n\n`;
-      m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 2\n${baseUrl}/#/live\n\n`;
-      m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 3\n${baseUrl}/#/index\n\n`;
-      m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 4\n${baseUrl}/#/match\n\n`;
-    }
+    // 4. FMP Live Links
+    const urlFmp = 'https://m.fmp.live';
+    m3uContent += `#EXTINF:-1 group-title="FMP Live", FMP Live Stream 1\n${urlFmp}/#/anchor\n\n`;
+    m3uContent += `#EXTINF:-1 group-title="FMP Live", FMP Live Stream 2\n${urlFmp}/\n\n`;
 
     res.setHeader('Content-Type', 'audio/x-mpegurl');
     res.status(200).send(m3uContent);
 
   } catch (error) {
-    res.status(500).send("Error fetching 857zb: " + error.message);
+    res.status(500).send("Error generating playlist: " + error.message);
   }
 }
