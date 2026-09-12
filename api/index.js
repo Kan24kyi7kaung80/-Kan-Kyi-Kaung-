@@ -9,14 +9,15 @@ export default async function handler(req, res) {
     let m3uContent = "#EXTM3U\n\n";
 
     const sites = [
+      { name: 'TrucTiepBongDa', url: 'https://tructiepbongda.football' },
       { name: '857zb', url: 'https://m.857zb81.com' },
       { name: 'SutbongTV', url: 'https://m.sutbongtv.com' },
       { name: '90phutZag', url: 'https://90phutzag.tv' },
       { name: 'FMP Live', url: 'https://m.fmp.live' }
     ];
 
-    // Regex to find links containing 'live' or 'match'
-    const linkRegex = /href=["']([^"']*(?:live|match)[^"']*)["']/gi;
+    // Regex to find match or live links
+    const linkRegex = /href=["']([^"']*(?:live|match|room|watch)[^"']*)["']/gi;
 
     for (const site of sites) {
       try {
@@ -48,19 +49,19 @@ export default async function handler(req, res) {
 
           if (!foundLinks.has(fullUrl)) {
             foundLinks.add(fullUrl);
-            m3uContent += `#EXTINF:-1 group-title="${site.name} Matches", ${site.name} Live Match ${count}\n${fullUrl}\n\n`;
+            m3uContent += `#EXTINF:-1 group-title="${site.name}", ${site.name} Stream ${count}\n${fullUrl}\n\n`;
             count++;
           }
         }
 
-        // Fallback if no specific match links are found on the homepage
+        // Fallback to homepage if no specific links found
         if (count === 1) {
-          m3uContent += `#EXTINF:-1 group-title="${site.name} Main", ${site.name} Home Page\n${site.url}/\n\n`;
+          m3uContent += `#EXTINF:-1 group-title="${site.name}", ${site.name} Home\n${site.url}/\n\n`;
         }
 
       } catch (err) {
         console.error(`Error with ${site.name}: ` + err.message);
-        m3uContent += `#EXTINF:-1 group-title="${site.name} Error", ${site.name} Main (Fallback)\n${site.url}/\n\n`;
+        m3uContent += `#EXTINF:-1 group-title="${site.name}", ${site.name} Main (Fallback)\n${site.url}/\n\n`;
       }
     }
 
