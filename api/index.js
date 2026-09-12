@@ -1,3 +1,4 @@
+
 const axios = require('axios');
 
 export default async function handler(req, res) {
@@ -8,30 +9,51 @@ export default async function handler(req, res) {
   try {
     let m3uContent = "#EXTM3U\n\n";
 
-    // 1. 857zb Links
-    const url857 = 'https://m.857zb81.com';
-    m3uContent += `#EXTINF:-1 group-title="857zb", 857zb Stream 1\n${url857}/\n\n`;
-    m3uContent += `#EXTINF:-1 group-title="857zb", 857zb Stream 2\n${url857}/#/live\n\n`;
+    const sites = [
+      { name: '857zb', url: 'https://m.857zb81.com' },
+      { name: 'SutbongTV', url: 'https://m.sutbongtv.com' },
+      { name: '90phutZag', url: 'https://90phutzag.tv' },
+      { name: 'FMP Live', url: 'https://m.fmp.live' }
+    ];
 
-    // 2. Sutbongtv Links
-    const urlSutbong = 'https://m.sutbongtv.com';
-    m3uContent += `#EXTINF:-1 group-title="SutbongTV", SutbongTV Stream 1\n${urlSutbong}/\n\n`;
-    m3uContent += `#EXTINF:-1 group-title="SutbongTV", SutbongTV Stream 2\n${urlSutbong}/#/live\n\n`;
+    const m3u8Regex = /(https?:\/\/[^\s"'<>]+?\.m3u8[^\s"'<>]*)/g;
 
-    // 3. 90phutzag Links
-    const url90phut = 'https://90phutzag.tv';
-    m3uContent += `#EXTINF:-1 group-title="90phutZag", 90phutZag Stream 1\n${url90phut}/\n\n`;
-    m3uContent += `#EXTINF:-1 group-title="90phutZag", 90phutZag Stream 2\n${url90phut}/#/live\n\n`;
+    for (const site of sites) {
+      try {
+        const response = await axios.get(site.url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Referer': site.url
+          },
+          timeout: 8000
+        });
 
-    // 4. FMP Live Links
-    const urlFmp = 'https://m.fmp.live';
-    m3uContent += `#EXTINF:-1 group-title="FMP Live", FMP Live Stream 1\n${urlFmp}/#/anchor\n\n`;
-    m3uContent += `#EXTINF:-1 group-title="FMP Live", FMP Live Stream 2\n${urlFmp}/\n\n`;
+        const html = response.data;
+        let match;
+        let count = 1;
+        let foundLinks = new Set(); 
+
+        while ((match = m3u8Regex.exec(html)) !== null) {
+          const streamUrl = match[1];
+          if (!foundLinks.has(streamUrl)) {
+            foundLinks.add(streamUrl);
+            m3uContent += `#EXTINF:-1 group-title="${site.name} Live", ${site.name} Match ${count}\n${streamUrl}\n\n`;
+            count++;
+          }
+        }
+      } catch (err) {
+        console.error(`Error with ${site.name}: ` + err.message);
+      }
+    }
+
+    if (m3uContent === "#EXTM3U\n\n") {
+      m3uContent += `#EXTINF:-1 group-title="Info", No direct m3u8 streams found currently\nhttp://localhost/no_stream_found.m3u8\n\n`;
+    }
 
     res.setHeader('Content-Type', 'audio/x-mpegurl');
     res.status(200).send(m3uContent);
 
   } catch (error) {
-    res.status(500).send("Error generating playlist: " + error.message);
+    res.status(500).send("Error generating playlist.");
   }
 }
