@@ -33,6 +33,8 @@ export default async function handler(req, res) {
     if (count === 1) {
       m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 1\n${baseUrl}/\n\n`;
       m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 2\n${baseUrl}/#/live\n\n`;
+      m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 3\n${baseUrl}/#/index\n\n`;
+      m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 4\n${baseUrl}/#/match\n\n`;
     }
 
     res.setHeader('Content-Type', 'audio/x-mpegurl');
