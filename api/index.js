@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 export default async function handler(req, res) {
-  // Disable caching for live data
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -10,7 +9,6 @@ export default async function handler(req, res) {
     let m3uContent = "#EXTM3U\n\n";
     const baseUrl = 'https://m.857zb81.com';
 
-    // Fetching with dynamic timestamp to bypass cache
     const response = await axios.get(`${baseUrl}/?t=${Date.now()}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36'
@@ -19,8 +17,6 @@ export default async function handler(req, res) {
     });
 
     const html = response.data;
-    
-    // Find all links containing 'live'
     const matchRegex = /href=["']([^"']*live[^"']*)["']/g;
     let match;
     let count = 1;
@@ -34,7 +30,6 @@ export default async function handler(req, res) {
       count++;
     }
 
-    // Direct fallback links if no matches are found dynamically
     if (count === 1) {
       m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 1\n${baseUrl}/\n\n`;
       m3uContent += `#EXTINF:-1 group-title="857zb Main", 857zb Direct Stream 2\n${baseUrl}/#/live\n\n`;
@@ -45,4 +40,5 @@ export default async function handler(req, res) {
 
   } catch (error) {
     res.status(500).send("Error fetching 857zb: " + error.message);
-  data
+  }
+}
