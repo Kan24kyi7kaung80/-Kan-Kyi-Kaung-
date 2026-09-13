@@ -7,59 +7,52 @@ export default async function handler(req, res) {
 
   try {
     let m3uContent = "#EXTM3U\n\n";
-    const site = { name: 'TrucTiepBongDa', url: 'https://tructiepbongda.football' };
 
-    // Regex to find match or live links
-    const linkRegex = /href=["']([^"']*(?:live|match|room|watch)[^"']*)["']/gi;
+    const sites = [
+      { name: '857zb', url: 'https://m.857zb81.com' },
+      { name: 'SutbongTV', url: 'https://m.sutbongtv.com' },
+      { name: '90phutZag', url: 'https://90phutzag.tv' },
+      { name: 'FMP Live', url: 'https://m.fmp.live' }
+    ];
 
-    try {
-      const response = await axios.get(site.url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-          'Referer': site.url
-        },
-        timeout: 8000
-      });
+    const m3u8Regex = /(https?:\/\/[^\s"'<>]+?\.m3u8[^\s"'<>]*)/g;
 
-      const html = response.data;
-      let match;
-      let count = 1;
-      let foundLinks = new Set();
+    for (const site of sites) {
+      try {
+        const response = await axios.get(site.url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Referer': site.url
+          },
+          timeout: 8000
+        });
 
-      while ((match = linkRegex.exec(html)) !== null) {
-        let relativeOrAbsoluteUrl = match[1];
-        
-        let fullUrl = relativeOrAbsoluteUrl;
-        if (!fullUrl.startsWith('http')) {
-          const base = site.url.endsWith('/') ? site.url.slice(0, -1) : site.url;
-          if (fullUrl.startsWith('/')) {
-            fullUrl = `${base}${fullUrl}`;
-          } else {
-            fullUrl = `${base}/${fullUrl}`;
+        const html = response.data;
+        let match;
+        let count = 1;
+        let foundLinks = new Set(); 
+
+        while ((match = m3u8Regex.exec(html)) !== null) {
+          const streamUrl = match[1];
+          if (!foundLinks.has(streamUrl)) {
+            foundLinks.add(streamUrl);
+            m3uContent += `#EXTINF:-1 group-title="${site.name} Live", ${site.name} Match ${count}\n${streamUrl}\n\n`;
+            count++;
           }
         }
-
-        if (!foundLinks.has(fullUrl)) {
-          foundLinks.add(fullUrl);
-          m3uContent += `#EXTINF:-1 group-title="TrucTiepBongDa", TrucTiepBongDa Stream ${count}\n${fullUrl}\n\n`;
-          count++;
-        }
+      } catch (err) {
+        console.error(`Error with ${site.name}: ` + err.message);
       }
+    }
 
-      // Fallback to homepage if no specific links found
-      if (count === 1) {
-        m3uContent += `#EXTINF:-1 group-title="TrucTiepBongDa", TrucTiepBongDa Home\n${site.url}/\n\n`;
-      }
-
-    } catch (err) {
-      console.error(`Error with ${site.name}: ` + err.message);
-      m3uContent += `#EXTINF:-1 group-title="TrucTiepBongDa", TrucTiepBongDa Main (Fallback)\n${site.url}/\n\n`;
+    if (m3uContent === "#EXTM3U\n\n") {
+      m3uContent += `#EXTINF:-1 group-title="Info", No direct m3u8 streams found currently\nhttp://localhost/no_stream_found.m3u8\n\n`;
     }
 
     res.setHeader('Content-Type', 'audio/x-mpegurl');
     res.status(200).send(m3uContent);
 
   } catch (error) {
-    res.status(500).send("Error generating playlist: " + error.message);
+    res.status(500).send("Error generating playlist.");
   }
 }
