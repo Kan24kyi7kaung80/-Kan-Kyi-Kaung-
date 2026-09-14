@@ -1,9 +1,6 @@
 #EXTM3U
-#EXTINF:-1, 1
-https://ub.esportlive.vip/sport/202_5702952_1.m3u8?auth_key=1789480800-0-0-fde794a567d795d8c3936bb3c2816074
+#EXTINF:-1, live 
+https://ub.esportlive.vip/sport/202_5702952_1.m3u8?auth_key=1789486320-0-0-edaff29242d3c55d66046112bbc45579
 
-#EXTINF:-1,2
-https://ub.esportlive.vip/sport/202_5542136_1.m3u8?auth_key=1789480800-0-0-5c66c49afcbe7df0a25fa052a115c287
-
-#EXTINF:-1, 3
-https://ub.esportlive.vip/sport/202_5440700_1.m3u8?auth_key=1789480920-0-0-06d661f1f5b5b11f597dfde942c53611
+#EXTINF:-1, link 
+https://ub.esportlive.vip/sport/202_5689128_1.m3u8?auth_key=1789486560-0-0-9d043a851cb3413b1903d46b26e9dd33
