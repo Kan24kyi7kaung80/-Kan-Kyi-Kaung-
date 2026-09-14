@@ -1,3 +1,9 @@
 #EXTM3U
-#EXTINF:-1, Man u
-https://pull.niues.live/live/stream-9912110_lhd.m3u8?auth_key=1789316282-0-0-f58ef55b97f122fed321441593e1dbd6
+#EXTINF:-1, 1
+https://ub.esportlive.vip/sport/202_5702952_1.m3u8?auth_key=1789480800-0-0-fde794a567d795d8c3936bb3c2816074
+
+#EXTINF:-1,2
+https://ub.esportlive.vip/sport/202_5542136_1.m3u8?auth_key=1789480800-0-0-5c66c49afcbe7df0a25fa052a115c287
+
+#EXTINF:-1, 3
+https://ub.esportlive.vip/sport/202_5440700_1.m3u8?auth_key=1789480920-0-0-06d661f1f5b5b11f597dfde942c53611
