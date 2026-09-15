@@ -1,15 +1,15 @@
 #EXTM3U
 #EXTINF:-1, live 
-https://hwyypull.ncctrials.com/live/stream-184581_lhd.flv?auth_key=1789451507-0-0-1bc9ece155332ae14021820aed226625
+https://pull.niues.live/live/stream-9912106_lhd.m3u8?auth_key=1789465382-0-0-4f0ed1967a10852cbcf1b6f4fb61eaa6
 
 #EXTINF:-1, link 
-
+https://pull.niues.live/live/stream-9912112_lhd.m3u8?auth_key=1789465442-0-0-46b62362169bae7966fd445240b3e97c
 
 #EXTINF:-1, 3
-https://hwyypull.ncctrials.com/live/stream-184585_lhd.flv?auth_key=1789456248-0-0-f9faad5e42173fa03b210723d0768833
+https://pull.niur.live/live/stream-343500_lhd.m3u8?txSecret=de9ca6274f169b8a0d42d469c8c7cc8f&txTime=6aa959ee
 
 #EXTINF:-1,4
-
+https://pull.niur.live/live/stream-152898_lhd.m3u8?txSecret=d3eb1168469a4d4dc84f50abb63719db&txTime=6aa95a2a
 
 #EXTINF:-1, 5
 
@@ -21,4 +21,6 @@ https://hwyypull.ncctrials.com/live/stream-184585_lhd.flv?auth_key=1789456248-0-
 
 
 #EXTINF:-1, 7
-https://hwyypull.ncctrials.com/live/stream-196569_lhd.flv?auth_key=1789451627-0-0-cdab4e7a35eb0f1964470bba74274a97
+
+
+
