@@ -1,26 +1,39 @@
 #EXTM3U
-#EXTINF:-1, A
-https://ub.esportlive.vip/sport/202_5626971_1.m3u8?auth_key=1789833480-0-0-f57b4b58380ca71baebf5cee512554b8
-
-#EXTINF:-1, B
-https://ub.esportlive.vip/sport/202_5768166_1.m3u8?auth_key=1789833480-0-0-60e41f8cbe94294a5d861e0a48d8db09
-
-#EXTINF:-1, 3
-https://ub.esportlive.vip/sport/202_5768167_1.m3u8?auth_key=1789833480-0-0-c6f1fb76d50eb49c77349a876bcefa85
-
-#EXTINF:-1,4
+#EXTINF:-1, Tottenham Hotspur 
 
 
-#EXTINF:-1, 5
+#EXTINF:-1, Arsenal 
+https://live05.meung.app/live/33982309_tsc.m3u8
+
+#EXTINF:-1, Newcastle 
+https://live05.meung.app/live/78905744_tsc.m3u8
+
+#EXTINF:-1, Everton 
+https://live05.meung.app/live/90865415_tsc.m3u8
+
+#EXTINF:-1, Bologna 
+https://live05.meung.app/live/87547578_tsc.m3u8
+
+#EXTINF:-1, Udniese
+https://live05.meung.app/live/07808742_tsc.m3u8
+
+#EXTINF:-1, Osasuna 
 
 
-
-#EXTINF:-1, 6
-
+#EXTINF:-1, Bilbao 
 
 
+#EXTINF:-1, Mochen
+https://live05.meung.app/live/59444581_tsc.m3u8
 
-#EXTINF:-1, 7
+#EXTINF:-1, Frankfurt 
+https://live05.meung.app/live/16226575_tsc.m3u8
+
+#EXTINF:-1, Hamburger 
+https://live05.meung.app/live/18812304_tsc.m3u8
+
+#EXTINF:-1, Werder
+https://live05.meung.app/live/07428422_tsc.m3u8
 
 
 
