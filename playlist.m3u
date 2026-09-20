@@ -1,4 +1,3 @@
-
 #EXTM3U
 #EXTINF:-1, Liverpool 
 
@@ -13,7 +12,7 @@
 
 
 #EXTINF:-1, Fiorentina 
-https://live05.meung.app/live/75748097_tsc.m3u8
+https://pull.niur.live/live/stream-283501_lhd.m3u8?txSecret=44aa78ccbd9d071f89893b4b6197d9cd&txTime=6ab0271b
 
 #EXTINF:-1, Como
 
@@ -29,7 +28,7 @@ https://live05.meung.app/live/75748097_tsc.m3u8
 
 
 #EXTINF:-1, Getafe 
-
+https://live05.meung.app/live/97885009_tsc.m3u8
 
 #EXTINF:-1, Real Madrid 
 
@@ -38,9 +37,7 @@ https://live05.meung.app/live/75748097_tsc.m3u8
 
 
 #EXTINF:-1, Nice
-
+https://pull.niur.live/live/stream-491873_lhd.m3u8?txSecret=aae87e980fcfaf153dc37695a1e30351&txTime=6ab027cf
 
 #EXTINF:-1, Live 
-https://pull.niues.live/live/stream-9912143_lhd.m3u8?auth_key=1789903383-0-0-da0683179bbe42544527acc3d6eccb54
-
-
+https://pull.niues.live/live/stream-618950_lhd.m3u8?auth_key=1789911303-0-0-5d07df9100229121330bbc8b389ef63e
