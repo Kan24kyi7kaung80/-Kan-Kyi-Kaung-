@@ -1,39 +1,46 @@
+
 #EXTM3U
-#EXTINF:-1, Tottenham Hotspur 
+#EXTINF:-1, Liverpool 
 
 
-#EXTINF:-1, Arsenal 
-https://live05.meung.app/live/33982309_tsc.m3u8
-
-#EXTINF:-1, Newcastle 
-https://live05.meung.app/live/78905744_tsc.m3u8
-
-#EXTINF:-1, Everton 
-https://live05.meung.app/live/90865415_tsc.m3u8
-
-#EXTINF:-1, Bologna 
+#EXTINF:-1, Man City 
 
 
-#EXTINF:-1, Udniese
+#EXTINF:-1, Leeds 
 
 
-#EXTINF:-1, Paris FC
-https://live05.meung.app/live/87547578_tsc.m3u8
-
-#EXTINF:-1, Bilbao 
-https://live05.meung.app/live/82054853_tsc.m3u8
-
-#EXTINF:-1, Mochen
+#EXTINF:-1, Man U 
 
 
-#EXTINF:-1, Frankfurt 
+#EXTINF:-1, Fiorentina 
+https://live05.meung.app/live/75748097_tsc.m3u8
+
+#EXTINF:-1, Como
 
 
-#EXTINF:-1, Hamburger 
+#EXTINF:-1, Parma 
 
 
-#EXTINF:-1, Werder
+#EXTINF:-1, Leverkusen 
 
 
+#EXTINF:-1, Schalke 04
+
+
+
+#EXTINF:-1, Getafe 
+
+
+#EXTINF:-1, Real Madrid 
+
+
+#EXTINF:-1, Auxerre 
+
+
+#EXTINF:-1, Nice
+
+
+#EXTINF:-1, Live 
+https://pull.niues.live/live/stream-9912143_lhd.m3u8?auth_key=1789903383-0-0-da0683179bbe42544527acc3d6eccb54
 
 
